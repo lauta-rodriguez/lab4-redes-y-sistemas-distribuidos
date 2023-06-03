@@ -10,6 +10,8 @@ using namespace omnetpp;
 class Net : public cSimpleModule
 {
 private:
+    cStdDev HopCount;
+
 public:
     Net();
     virtual ~Net();
@@ -34,10 +36,12 @@ Net::~Net()
 
 void Net::initialize()
 {
+    HopCount.setName("hop count");
 }
 
 void Net::finish()
 {
+    recordScalar("average hop count", HopCount.getMean());
 }
 
 void Net::handleMessage(cMessage *msg)
@@ -50,6 +54,9 @@ void Net::handleMessage(cMessage *msg)
     if (pkt->getDestination() == this->getParentModule()->getIndex())
     {
         send(msg, "toApp$o");
+
+        // record as vector de la cantidad de hops de ese paquete
+        HopCount.collect(pkt->getHopCount());
     }
     // If not, forward the packet to some else... to who?
     else
@@ -58,5 +65,8 @@ void Net::handleMessage(cMessage *msg)
         // one connected to the clockwise side of the ring
         // Is this the best choice? are there others?
         send(msg, "toLnk$o", 0);
+
+        // increment hop count
+        pkt->setHopCount(pkt->getHopCount() + 1);
     }
 }

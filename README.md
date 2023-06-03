@@ -5,7 +5,7 @@
 ## Integrantes:
 
 - Lara Kurtz, lara.kurtz@mi.unc.edu.ar
-- Lautaro RodriÂ­guez, lautaro.rodriguez@mi.unc.edu.ar
+- Lautaro Rodríguez, lautaro.rodriguez@mi.unc.edu.ar
 
 # Abstract
 

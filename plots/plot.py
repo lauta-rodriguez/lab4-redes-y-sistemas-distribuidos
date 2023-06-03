@@ -20,11 +20,13 @@ simulations = {
 
 
 def time_vs_buffer(module, sim, it=1):
-    time = get_data(module, 'buffer size', 'time', 'vectors', sim, it)
+    time = get_data(module, 'Buffer Size', 'time', 'vectors', sim, it)
     time = list(map(float, time))
+    print(time)
 
-    buffer_size = get_data(module, 'buffer size', 'value', 'vectors', sim, it)
+    buffer_size = get_data(module, 'Buffer Size', 'value', 'vectors', sim, it)
     buffer_size = list(map(float, buffer_size))
+    print(buffer_size)
 
     plt.plot(time, buffer_size, label=f'caso {sim[1]}')
 
@@ -94,17 +96,17 @@ def time_vs_buffer_cmp(sim):
     plt.suptitle('Tiempo vs tamaño de búfer')
 
     plt.xlim(0, 200)
-    plt.ylim(0, 200)
+    plt.ylim(0, 800)
 
-    time_vs_buffer('Network.nodeTx.queue', sim)
-    time_vs_buffer('Network.queue', sim)
-    time_vs_buffer('Network.nodeRx.queue', sim)
+    time_vs_buffer('Network.node[0].lnk[0]', sim)
+    time_vs_buffer('Network.node[2].lnk[0]', sim)
+    time_vs_buffer('Network.node[2].lnk[0]', sim)
 
     plt.legend(loc='upper left')
 
     save_plot(f'time-buffer-p{sim[0]}c{sim[1]}.png')
-    # plt.show()
-    plt.clf()
+    plt.show()
+    # plt.clf()
 
 
 def offered_vs_payload_cmp():

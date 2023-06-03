@@ -4,8 +4,9 @@ import os
 import json
 import matplotlib.pyplot as plt
 
-FILE_NAME_FORMAT = './data-samples/{type}-p{scenario}-c{case}-s{iteration}.json'
-GRAPH_DIR = './graphs'
+FILE_NAME_FORMAT = './plots/data/{type}-p{scenario}-c{case}-s{iteration}.json'
+GRAPH_DIR = './plots/img'
+
 
 # helper function. Returns the index of the vector with the given module and name
 def get_index(dict, module, name, data_type):
@@ -13,6 +14,7 @@ def get_index(dict, module, name, data_type):
         if element['module'] == module and element['name'] == name:
             return index
     return -1  # Return -1 if the vector is not found
+
 
 # returns the data of the vector/scalar with the given module, metric and name
 def get_data(module, metric, name, data_type, sim, it):
@@ -36,6 +38,7 @@ def get_data(module, metric, name, data_type, sim, it):
         print(f'File {fvector} not found.')
 
     return None
+
 
 # saves a plot with the speccified filename
 def save_plot(filename):

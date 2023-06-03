@@ -1,4 +1,4 @@
-from data import *
+from parse import *
 import matplotlib.pyplot as plt
 
 AMOUNT_SIM = 5
@@ -17,6 +17,7 @@ simulations = {
 ################################################################################
 # SIMPLE PLOTS
 ################################################################################
+
 
 def time_vs_buffer(module, sim, it=1):
     time = get_data(module, 'buffer size', 'time', 'vectors', sim, it)
@@ -86,6 +87,7 @@ def offered_vs_dropped(sim):
 # COMPUND PLOTS
 ################################################################################
 
+
 def time_vs_buffer_cmp(sim):
     plt.figure()
 
@@ -137,5 +139,5 @@ def offered_vs_dropped_cmp():
     plt.legend(loc='upper left')
 
     save_plot('offered-dropped.png')
-    #plt.show()
+    # plt.show()
     plt.clf()

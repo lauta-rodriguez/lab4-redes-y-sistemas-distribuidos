@@ -21,69 +21,92 @@ simulations = {
 
 def time_vs_buffer(module, sim, it=1):
     time = get_data(module, 'Buffer Size', 'time', 'vectors', sim, it)
-    time = list(map(float, time))
-    print(time)
-
     buffer_size = get_data(module, 'Buffer Size', 'value', 'vectors', sim, it)
-    buffer_size = list(map(float, buffer_size))
-    print(buffer_size)
 
-    plt.plot(time, buffer_size, label=f'caso {sim[1]}')
+    if (time is not None and buffer_size is not None):
+        time = list(map(float, time))
+        buffer_size = list(map(float, buffer_size))
+
+        plt.plot(time, buffer_size, label=f'{module}')
+
+
+def time_vs_delay(module, sim, it=1):
+    time = get_data(module, 'Delay', 'time', 'vectors', sim, it)
+    delay = get_data(module, 'Delay', 'value', 'vectors', sim, it)
+
+    if (time is not None and delay is not None):
+        time = list(map(float, time))
+        delay = list(map(float, delay))
+
+        plt.plot(time, delay, label=f'{module}')
+        plt.show()
 
 
 def offered_vs_payload(sim):
     offered_load = [0]
     payload = [0]
+    sent_packets = 0
 
-    if (sim[0] == 1):
-        transmitter = 'Network.nodeTx.queue'
-        receiver = 'Network.nodeRx.sink'
+    if sim[1] == 1:
+        nodes = [0, 2]
     else:
-        transmitter = 'Network.Transmitter.traTx'
-        receiver = 'Network.Receiver.sink'
+        nodes = [0, 1, 2, 3, 4, 6, 7]
 
-    for it in range(AMOUNT_SIM, 0, -1):
-        # (module, metric, name, data_type, case_study)
-        sent_packets = get_data(transmitter, 'sent packets',
-                                'value', 'scalars', sim, it)
-        offered_load.append(float(sent_packets)/SIM_TIME)
+    # for each simulation
+    for it in range(1, 0, -1):
+        # for each transmitter node
+        for _, key in enumerate(nodes):
+            cant = get_data(f'Network.node[{key}].app', 'sent packets',
+                            'value', 'scalars', sim, it)
+            if (cant is not None):
+                sent_packets += cant
 
         delivered_packets = get_data(
-            receiver, 'delivered packets', 'value', 'scalars', sim, it)
+            f'Network.node[5].app', 'delivered packets', 'value', 'scalars', sim, it)
+
+        print(sent_packets)
+        print(delivered_packets)
+
+        offered_load.append(float(sent_packets)/SIM_TIME)
         payload.append(float(delivered_packets)/SIM_TIME)
 
     plt.plot(offered_load, payload, label=f'caso {sim[1]}')
 
 
-def offered_vs_dropped(sim):
+def offered_vs_delay(sim):
     offered_load = [0]
-    dropped = [0]
+    delay = [0]
+    sent_packets = 0
 
-    if (sim[0] == 1):
-        transmitter = 'Network.nodeTx.queue'
-        subnet = 'Network.queue'
-        receiver = 'Network.nodeRx.queue'
+    if sim[1] == 1:
+        nodes = [0, 2]
     else:
-        transmitter = 'Network.Transmitter.traTx'
-        subnet = 'Network.Subnet'
-        receiver = 'Network.Receiver.traRx'
+        nodes = [0, 1, 2, 3, 4, 6, 7]
 
-    if (sim[1] == 1):
-        module = receiver
-    else:
-        module = subnet
-
+    # for each simulation
     for it in range(AMOUNT_SIM, 0, -1):
-        # (module, metric, name, data_type, case_study)
-        sent_packets = get_data(
-            transmitter, 'sent packets', 'value', 'scalars', sim, it)
+
+        if not simulation_exists:
+            continue
+
+        # for each transmitter node
+        for _, key in enumerate(nodes):
+            cant = get_data(f'Network.node[{key}].app', 'sent packets',
+                            'value', 'scalars', sim, it)
+
+            if (cant is not None):  # value not found
+                sent_packets += cant
+
+        avg_delay = get_data(
+            f'Network.node[5].app', 'Average delay', 'value', 'scalars', sim, it)
+
+        print(sent_packets)
+        print(avg_delay)
+
         offered_load.append(float(sent_packets)/SIM_TIME)
+        delay.append(float(avg_delay))
 
-        dropped_packets = get_data(
-            module, 'dropped packets', 'value', 'scalars', sim, it)
-        dropped.append(float(dropped_packets))
-
-    plt.plot(offered_load, dropped, label=f'caso {sim[1]}')
+    plt.plot(offered_load, delay, label=f'caso {sim[1]}')
 
 ################################################################################
 # COMPUND PLOTS
@@ -98,9 +121,14 @@ def time_vs_buffer_cmp(sim):
     plt.xlim(0, 200)
     plt.ylim(0, 800)
 
-    time_vs_buffer('Network.node[0].lnk[0]', sim)
-    time_vs_buffer('Network.node[2].lnk[0]', sim)
-    time_vs_buffer('Network.node[2].lnk[0]', sim)
+    if sim[1] == 1:
+        nodes = [0, 2]
+    else:
+        nodes = [0, 1, 2, 3, 4, 6, 7]
+
+    for _, key in enumerate(nodes):
+        time_vs_buffer(f'Network.node[{key}].lnk[0]', sim)
+        time_vs_buffer(f'Network.node[{key}].lnk[1]', sim)
 
     plt.legend(loc='upper left')
 
@@ -109,16 +137,36 @@ def time_vs_buffer_cmp(sim):
     # plt.clf()
 
 
-def offered_vs_payload_cmp():
+def time_vs_delay_cmp(sim):
     plt.figure()
 
-    plt.suptitle('Carga ofrecida vs Carga útil')
+    plt.suptitle('Tiempo vs delay')
+
+    plt.xlim(0, 200)
+    plt.ylim(0, 200)
+
+    time_vs_delay('Network.node[5].app', sim)
+
+    plt.legend(loc='upper left')
+
+    # save_plot(f'time-delay-p{sim[0]}c{sim[1]}.png')
+    plt.show()
+    # plt.clf()
+
+
+def offered_vs_payload_cmp(sim):
+    plt.figure()
+
+    plt.suptitle('Carga ofrecida vs carga útil')
 
     plt.xlim(0, 10)
     plt.ylim(0, 10)
 
-    for _, key in enumerate(simulations):
-        offered_vs_payload(simulations[key])
+    plt.xlabel('Carga ofrecida')
+    plt.ylabel('Carga útil')
+
+    # for _, key in enumerate(simulations):
+    offered_vs_payload(sim)
 
     plt.legend(loc='upper left')
 
@@ -127,19 +175,22 @@ def offered_vs_payload_cmp():
     plt.clf()
 
 
-def offered_vs_dropped_cmp():
+def offered_vs_delay_cmp(sim):
     plt.figure()
 
-    plt.suptitle('Carga ofrecida vs paquetes perdidos')
+    plt.suptitle('Carga ofrecida vs delay')
 
     plt.xlim(0, 10)
-    plt.ylim(0, 1000)
+    plt.ylim(0, 70)
 
-    for _, key in enumerate(simulations):
-        offered_vs_dropped(simulations[key])
+    plt.xlabel('Carga ofrecida')
+    plt.ylabel('Delay')
+
+    # for _, key in enumerate(simulations):
+    offered_vs_delay(sim)
 
     plt.legend(loc='upper left')
 
-    save_plot('offered-dropped.png')
+    save_plot('offered-delay.png')
     # plt.show()
     plt.clf()

@@ -16,8 +16,15 @@ def get_index(dict, module, name, data_type):
     return -1  # Return -1 if the vector is not found
 
 
+def simulation_exists(data_type, sim, it=1):
+    sim_file = fvector = FILE_NAME_FORMAT.format(
+        type=data_type, scenario=sim[0], case=sim[1], iteration=it)
+
+    return os.path.isfile(sim_file)
+
+
 # returns the data of the vector/scalar with the given module, metric and name
-def get_data(module, metric, name, data_type, sim, it):
+def get_data(module, metric, name, data_type, sim, it=1):
     fvector = FILE_NAME_FORMAT.format(
         type=data_type, scenario=sim[0], case=sim[1], iteration=it)
 
@@ -32,7 +39,8 @@ def get_data(module, metric, name, data_type, sim, it):
         # get the index of the vector
         index = get_index(sim_dict, module, metric, data_type)
 
-        return sim_dict[data_type][index][name]
+        if index != -1:
+            return sim_dict[data_type][index][name]
 
     else:
         print(f'File {fvector} not found.')

@@ -7,13 +7,14 @@ import matplotlib.pyplot as plt
 FILE_NAME_FORMAT = './plots/data/{type}-p{scenario}-c{case}-s{iteration}.json'
 GRAPH_DIR = './plots/img'
 
+# helper function. Returns the index of the element with the given module and name
 
-# helper function. Returns the index of the vector with the given module and name
+
 def get_index(dict, module, name, data_type):
     for index, element in enumerate(dict[data_type]):
         if element['module'] == module and element['name'] == name:
             return index
-    return -1  # Return -1 if the vector is not found
+    return -1  # Return -1 if the element is not found
 
 
 def simulation_exists(data_type, sim, it=1):

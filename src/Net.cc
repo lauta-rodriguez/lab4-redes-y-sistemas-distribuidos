@@ -4,6 +4,7 @@
 #include <string.h>
 #include <omnetpp.h>
 #include <packet_m.h>
+#include "const.h"
 
 using namespace omnetpp;
 
@@ -11,6 +12,9 @@ class Net : public cSimpleModule
 {
 private:
     cStdDev HopCount;
+
+    // 0: clockwise, 1: counterclockwise
+    bool preferredOutInterface;
 
 public:
     Net();
@@ -37,6 +41,21 @@ Net::~Net()
 void Net::initialize()
 {
     HopCount.setName("hop count");
+
+    // initialize with invalid interface value
+    preferredOutInterface = -1;
+
+    Packet *hello_pkt = new Packet();
+
+    hello_pkt->setKind(KIND_HELLO);
+    hello_pkt->setByteLength(20);
+
+    hello_pkt->setSource(this->getParentModule()->getIndex());
+    hello_pkt->setDestination(DEST_NODE);
+
+    hello_pkt->setHopCount(0);
+
+    send(hello_pkt, "toLnk$o", REC_LNK);
 }
 
 void Net::finish()

@@ -72,9 +72,6 @@ def offered_vs_payload(sim):
         offered_load.append(float(sent_packets)/SIM_TIME)
         payload.append(float(delivered_packets)/SIM_TIME)
 
-    print(f'Parte {sim[0]}, caso {sim[1]} - offered load {offered_load}')
-    print(f'Parte {sim[0]}, caso {sim[1]} - payload      {payload}')
-
     plt.plot(offered_load, payload, label=f'Parte {sim[0]}, caso {sim[1]}')
 
 
@@ -120,7 +117,8 @@ def time_vs_buffer_cmp(sim, iteration=1):
     plt.subplots_adjust(bottom=0.16)
 
     # display plot info
-    plt.suptitle(f'Parte {sim[0]}, caso {sim[1]}')
+    plt.suptitle(
+        f"Algoritmo {'inicial' if sim[0] == 1 else 'modificado'}, caso {sim[1]}")
     plt.title('Tiempo vs tamaño de búfer')
     plt.xlabel('Tiempo (s)')
     plt.ylabel('Tamaño de búfer (paquetes)')
@@ -153,13 +151,14 @@ def time_vs_delay_cmp(sim):
     plt.subplots_adjust(bottom=0.16)
 
     # display plot info
-    plt.suptitle(f'Parte {sim[0]}, caso {sim[1]}')
+    plt.suptitle(
+        f"Algoritmo {'inicial' if sim[0] == 1 else 'modificado'}, caso {sim[1]}")
     plt.title('Tiempo vs delay')
     plt.xlabel('Tiempo (s)')
     plt.ylabel('Delay (s)')
 
-    plt.xlim(0, 80)
-    plt.ylim(0, 80)
+    plt.xlim(0, 200)
+    plt.ylim(0, 200)
 
     for sim_iteration in range(AMOUNT_SIM, 0, -1):
         time_vs_delay('Network.node[5].app', sim, sim_iteration)

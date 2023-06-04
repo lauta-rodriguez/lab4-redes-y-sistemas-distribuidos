@@ -15,6 +15,9 @@ private:
     cStdDev delayStats;
     cOutVector delayVector;
 
+    unsigned int sentPackets;
+    unsigned int deliveredPackets;
+
 public:
     App();
     virtual ~App();
@@ -39,6 +42,8 @@ App::~App()
 
 void App::initialize()
 {
+    sentPackets = 0;
+    deliveredPackets = 0;
 
     // If interArrivalTime for this node is higher than 0
     // initialize packet generator by scheduling sendMsgEvent
@@ -58,6 +63,9 @@ void App::finish()
     // Record statistics
     recordScalar("Average delay", delayStats.getMean());
     recordScalar("Number of packets", delayStats.getCount());
+
+    recordScalar("sent packets", sentPackets);
+    recordScalar("delivered packets", deliveredPackets);
 }
 
 void App::handleMessage(cMessage *msg)
@@ -74,6 +82,9 @@ void App::handleMessage(cMessage *msg)
 
         pkt->setKind(KIND_DATA);
 
+        // update statistics
+        sentPackets++;
+
         // send to net layer
         send(pkt, "toNet$o");
 
@@ -84,6 +95,9 @@ void App::handleMessage(cMessage *msg)
     // else, msg is a packet from net layer
     else
     {
+        // update statistics
+        deliveredPackets++;
+
         // compute delay and record statistics
         simtime_t delay = simTime() - msg->getCreationTime();
         delayStats.collect(delay);

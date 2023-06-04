@@ -25,6 +25,7 @@ protected:
     virtual void finish();
     virtual void handleMessage(cMessage *msg);
 
+    virtual void handleDataPacket(Packet *data_pkt);
     virtual void handleHelloPacket(Packet *hello_pkt);
     virtual void handleInfoPacket(Packet *info_pkt);
 };
@@ -64,6 +65,29 @@ void Net::initialize()
 void Net::finish()
 {
     recordScalar("average hop count", HopCount.getMean());
+}
+
+void Net::handleDataPacket(Packet *data_pkt)
+{
+    assert(data_pkt->getKind() == 12);
+
+    // If this node is the final destination, send to App
+    if (data_pkt->getDestination() == this->getParentModule()->getIndex())
+    {
+        // hop count is initialized to 0
+        data_pkt->setHopCount(data_pkt->getHopCount() + 1);
+
+        send(data_pkt, "toApp$o");
+
+        // record as vector de la cantidad de hops de ese paquete
+        HopCount.collect(data_pkt->getHopCount());
+    }
+    else // If not, forward the packet
+    {
+        // increment hop count
+        data_pkt->setHopCount(data_pkt->getHopCount() + 1);
+        send(data_pkt, "toLnk$o", (int)preferredOutInterface);
+    }
 }
 
 void Net::handleHelloPacket(Packet *hello_pkt)
@@ -116,23 +140,16 @@ void Net::handleMessage(cMessage *msg)
     // All msg (events) on net are packets
     Packet *pkt = (Packet *)msg;
 
-    // If this node is the final destination, send to App
-    if (pkt->getDestination() == this->getParentModule()->getIndex())
+    if (pkt->getKind() == KIND_DATA)
     {
-        send(msg, "toApp$o");
-
-        // record as vector de la cantidad de hops de ese paquete
-        HopCount.collect(pkt->getHopCount());
+        handleDataPacket(pkt);
     }
-    // If not, forward the packet to some else... to who?
-    else
+    else if (pkt->getKind() == KIND_HELLO)
     {
-        // We send to link interface #0, which is the
-        // one connected to the clockwise side of the ring
-        // Is this the best choice? are there others?
-        send(msg, "toLnk$o", 0);
-
-        // increment hop count
-        pkt->setHopCount(pkt->getHopCount() + 1);
+        handleHelloPacket(pkt);
+    }
+    else if (pkt->getKind() == KIND_INFO)
+    {
+        handleInfoPacket(pkt);
     }
 }

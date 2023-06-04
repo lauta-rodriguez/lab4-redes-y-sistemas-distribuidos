@@ -4,6 +4,7 @@
 #include <string.h>
 #include <omnetpp.h>
 #include <packet_m.h>
+#include "const.h"
 
 using namespace omnetpp;
 
@@ -70,6 +71,8 @@ void App::handleMessage(cMessage *msg)
         pkt->setByteLength(par("packetByteSize"));
         pkt->setSource(this->getParentModule()->getIndex());
         pkt->setDestination(par("destination"));
+
+        pkt->setKind(KIND_DATA);
 
         // send to net layer
         send(pkt, "toNet$o");

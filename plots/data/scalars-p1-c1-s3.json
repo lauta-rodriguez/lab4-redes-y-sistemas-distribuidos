@@ -1,0 +1,146 @@
+{
+    "General-0-20230604-15:37:34-53695" : {
+        "attributes" : {
+            "configname" : "General",
+            "datetime" : "20230604-15:37:34",
+            "datetimef" : "20230604-153734",
+            "experiment" : "General",
+            "inifile" : "caso1.ini",
+            "iterationvars" : "",
+            "iterationvarsd" : "",
+            "iterationvarsf" : "",
+            "measurement" : "",
+            "network" : "Network",
+            "processid" : "53695",
+            "repetition" : "0",
+            "replication" : "#0",
+            "resultdir" : "results",
+            "runnumber" : "0",
+            "seedset" : "0"
+        },
+        "itervars" : {
+        },
+        "config" : [
+            { "network" : "Network" },
+            { "sim-time-limit" : "200s" },
+            { "Network.node[0].app.interArrivalTime" : "exponential(1)" },
+            { "Network.node[0].app.packetByteSize" : "125000" },
+            { "Network.node[0].app.destination" : "5" },
+            { "Network.node[2].app.interArrivalTime" : "exponential(1)" },
+            { "Network.node[2].app.packetByteSize" : "125000" },
+            { "Network.node[2].app.destination" : "5" }
+        ],
+        "scalars" : [
+            {
+                "module" : "Network.node[3].app",
+                "name" : "delivered packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[3].net",
+                "name" : "average hop count",
+                "value" : null
+            },
+            {
+                "module" : "Network.node[4].app",
+                "name" : "Average delay",
+                "value" : null
+            },
+            {
+                "module" : "Network.node[4].app",
+                "name" : "Number of packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[4].app",
+                "name" : "sent packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[4].app",
+                "name" : "delivered packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[4].net",
+                "name" : "average hop count",
+                "value" : null
+            },
+            {
+                "module" : "Network.node[5].app",
+                "name" : "Average delay",
+                "value" : 51.159159092181
+            },
+            {
+                "module" : "Network.node[5].app",
+                "name" : "Number of packets",
+                "value" : 196
+            },
+            {
+                "module" : "Network.node[5].app",
+                "name" : "sent packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[5].app",
+                "name" : "delivered packets",
+                "value" : 196
+            },
+            {
+                "module" : "Network.node[5].net",
+                "name" : "average hop count",
+                "value" : 3.9183673469388
+            },
+            {
+                "module" : "Network.node[6].app",
+                "name" : "Average delay",
+                "value" : null
+            },
+            {
+                "module" : "Network.node[6].app",
+                "name" : "Number of packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[6].app",
+                "name" : "sent packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[6].app",
+                "name" : "delivered packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[6].net",
+                "name" : "average hop count",
+                "value" : null
+            },
+            {
+                "module" : "Network.node[7].app",
+                "name" : "Average delay",
+                "value" : null
+            },
+            {
+                "module" : "Network.node[7].app",
+                "name" : "Number of packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[7].app",
+                "name" : "sent packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[7].app",
+                "name" : "delivered packets",
+                "value" : 0
+            },
+            {
+                "module" : "Network.node[7].net",
+                "name" : "average hop count",
+                "value" : null
+            }
+        ]
+    }
+}

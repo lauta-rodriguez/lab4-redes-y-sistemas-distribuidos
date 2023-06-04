@@ -97,7 +97,7 @@ void Net::handleHelloPacket(Packet *hello_pkt)
         Packet *info_pkt = new Packet();
 
         info_pkt->setKind(KIND_INFO);
-        info_pkt->setBitLength(20);
+        info_pkt->setByteLength(20);
 
         info_pkt->setDestination(hello_pkt->getSource());
 

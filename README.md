@@ -63,10 +63,18 @@ Los nodos **0** y **2** envían paquetes al nodo **5**.
 
 ### Comparación del delay de los paquetes en ambos algoritmos
 
+El algoritmo modificado reduce significativamente el **delay** de los paquetes en comparación con el algoritmo inicial. Esto se debe a dos factores:
+
+- Reducción de la distancia recorrida por los paquetes: El algoritmo modificado disminuye la cantidad de saltos que los paquetes deben realizar para llegar a su destino.
+
+- Distribución equitativa de la carga de tráfico: El nuevo algoritmo distribuye de manera más equitativa la carga de tráfico entre las interfaces de comunicación de los nodos. Esto evita la congestión y el cuello de botella que se producían en los nodos ubicados a la derecha del nodo emisor en el algoritmo inicial.
+
 ![delay_p1](/plots/img/time-delay-p1c1-2.png)
 ![delay_p2](/plots/img/time-delay-p2c1-2.png)
 
 ### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
+
+Se observa que el algoritmo modificado distribuye de manera más equitativa la carga de tráfico entre las interfaces, evitando congestionar el buffer del nodo `0`.
 
 ![buffer_p1_s1](/plots/img/time-buffer-p1c1-0.png)
 ![buffer_p1_s2](/plots/img/time-buffer-p1c1-1.png)
@@ -78,6 +86,8 @@ Los nodos **0**, **1**, **2**, **3**, **4**, **5**, **6** y **7** envían paquet
 
 ### Comparación del delay de los paquetes en ambos algoritmos
 
+Se observa que el algoritmo modificado reduce de manera significativa el delay en comparación con el algoritmo inicial. Esto se debe a la forma en que se distribuye la carga de tráfico en el sistema. En el algoritmo modificado, la carga se divide en dos: la mitad de los nodos envían paquetes a través de la interfaz `0` y la otra mitad utiliza la interfaz `1`.
+
 ![delay_p1](/plots/img/time-delay-p1c2-2.png)
 ![delay_p2](/plots/img/time-delay-p2c2-2.png)
 
@@ -86,3 +96,11 @@ Los nodos **0**, **1**, **2**, **3**, **4**, **5**, **6** y **7** envían paquet
 ![buffer_p1_s1](/plots/img/time-buffer-p1c2-0.png)
 ![buffer_p1_s2](/plots/img/time-buffer-p1c2-1.png)
 ![buffer_p1_s3](/plots/img/time-buffer-p1c2-2.png)
+
+# Conclusiones
+
+Considerando las métricas de `delay` y `cantidad de saltos` de los paquetes, se evidencia la mejora del algoritmo modificado en comparación con el algoritmo inicial:
+
+- tabla comparativa de delay y hop count para caso 1 con ambos algoritmos
+
+- tabla comparativa de delay y hop count para caso 2 con ambos algoritmos

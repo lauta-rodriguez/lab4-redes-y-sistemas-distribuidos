@@ -55,36 +55,34 @@ El algoritmo de enrutamiento modificado sigue los siguientes pasos:
 
 # Análisis de las redes bajo los algoritmos de enrutamiento
 
-Se utiliza una distribución exponencial con un parámetro de 1, lo que significa que los paquetes se generan en promedio cada 1 segundo. Se plantean dos casos de estudio:
+Se utiliza una distribución exponencial con un parámetro variable, que toma los siguientes valores: `0.3`, `0.6` y `1`, lo que significa que los paquetes se generan en promedio cada `0.3`, `0.6` y `1` segundo. Se plantean dos casos de estudio:
 
 ## Caso 1: Dos nodos envían paquetes al mismo nodo destino
 
 Los nodos **0** y **2** envían paquetes al nodo **5**.
 
-### Comparación del retardo de los paquetes en ambos algoritmos
+### Comparación del delay de los paquetes en ambos algoritmos
 
-gráficos de retardo de paquetes en función del tiempo
+![delay_p1](/plots/img/time-delay-p1c1-2.png)
+![delay_p2](/plots/img/time-delay-p2c1-2.png)
 
-### Comparación del tamaño de la cola de paquetes en ambos algoritmos
+### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
 
-gráficos de tamaño de la cola de paquetes en función del tiempo
+![buffer_p1_s1](/plots/img/time-buffer-p1c1-0.png)
+![buffer_p1_s2](/plots/img/time-buffer-p1c1-1.png)
+![buffer_p1_s3](/plots/img/time-buffer-p1c1-2.png)
 
 ## Caso 2: Todos los nodos envían paquetes al mismo nodo destino
 
 Los nodos **0**, **1**, **2**, **3**, **4**, **5**, **6** y **7** envían paquetes al nodo **5**.
 
-### Comparación del retardo de los paquetes en ambos algoritmos
+### Comparación del delay de los paquetes en ambos algoritmos
 
-gráficos de retardo de paquetes en función del tiempo
+![delay_p1](/plots/img/time-delay-p1c2-2.png)
+![delay_p2](/plots/img/time-delay-p2c2-2.png)
 
-### Comparación del tamaño de la cola de paquetes en ambos algoritmos
+### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
 
-gráficos de tamaño de la cola de paquetes en función del tiempo
-
-# Resultados
-
-Acá comparamos los resultados obtenidos en ambos algoritmos
-
-tablas de escalares
-
-info relevante
+![buffer_p1_s1](/plots/img/time-buffer-p1c2-0.png)
+![buffer_p1_s2](/plots/img/time-buffer-p1c2-1.png)
+![buffer_p1_s3](/plots/img/time-buffer-p1c2-2.png)

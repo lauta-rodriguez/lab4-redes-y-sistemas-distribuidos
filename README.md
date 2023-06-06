@@ -99,22 +99,34 @@ Se observa que el algoritmo modificado reduce de manera significativa el delay e
 
 # Conclusiones
 
-Considerando las métricas de `delay` y `cantidad de saltos` de los paquetes, se evidencia la mejora del algoritmo modificado en comparación con el algoritmo inicial:
+### Caso de estudio 1: Average Hop Count
 
-caso averageHopCount averageDelay
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 3.44              | 3                    |
+| 0,6              | 3.73              | 3                    |
+| 1,0              | 3.91              | 3                    |
 
-p1c1 0,3:
-p1c1 0,6:
-p1c1 1,0:
+### Caso de estudio 2: Average Hop Count
 
-p1c2 0,3:
-p1c2 0,6:
-p1c2 1,0:
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 1.33              | 1.31                 |
+| 0,6              | 1.65              | 1.57                 |
+| 1,0              | 2.06              | 1.84                 |
 
-p2c1 0,3: 3 71.08
-p2c1 0,6: 3 41.07
-p2c1 1,0: 3 6.90
+### Caso de estudio 1: Average Delay
 
-p2c2 0,3: 1.31 80.25
-p2c2 0,6: 1.57 71.51
-p2c2 1,0: 1.84 63.66
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 82                | 71.08                |
+| 0,6              | 69.19             | 41.07                |
+| 1,0              | 51.15             | 6.90                 |
+
+### Caso de estudio 2: Average Delay
+
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 79.31             | 80.25                |
+| 0,6              | 70.83             | 71.51                |
+| 1,0              | 64.53             | 63.66                |

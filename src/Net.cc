@@ -75,7 +75,7 @@ void Net::handleDataPacket(Packet *data_pkt)
     if (data_pkt->getDestination() == this->getParentModule()->getIndex())
     {
         // hop count is initialized to 0
-        data_pkt->setHopCount(data_pkt->getHopCount() + 1);
+        // data_pkt->setHopCount(data_pkt->getHopCount() + 1);
 
         send(data_pkt, "toApp$o");
 

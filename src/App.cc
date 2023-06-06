@@ -80,6 +80,7 @@ void App::handleMessage(cMessage *msg)
         pkt->setSource(this->getParentModule()->getIndex());
         pkt->setDestination(par("destination"));
 
+        pkt->setHopCount(0);
         pkt->setKind(KIND_DATA);
 
         // update statistics

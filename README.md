@@ -99,6 +99,12 @@ Se observa que el algoritmo modificado reduce de manera significativa el delay e
 
 # Conclusiones
 
+En el caso de estudio 1, donde solo dos nodos envían paquetes al mismo destino, el algoritmo modificado logra reducir tanto el retardo como la cantidad promedio de saltos necesarios para entregar los paquetes. Esto se debe a la distribución equitativa de la carga de tráfico entre las interfaces de comunicación de los nodos.
+
+En el caso de estudio 2, donde todos los nodos envían paquetes al mismo destino, el algoritmo modificado también logra disminuir el retardo promedio de los paquetes en comparación con el algoritmo inicial. Aunque la cantidad promedio de saltos no disminuye significativamente.
+
+Sin embargo, es importante destacar que el algoritmo modificado aún puede ser mejorado. En lugar de hardcodear la ruta de los paquetes en la etapa de inundación, se podría implementar un análisis periódico del estado de la red para enrutar los paquetes en función de los cambios en la topología. Esto permitiría adaptar el enrutamiento de manera dinámica y optimizar aún más el rendimiento de la red.
+
 ### Caso de estudio 1: Average Hop Count
 
 | interArrivalTime | Algoritmo inicial | Algoritmo modificado |

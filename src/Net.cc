@@ -16,6 +16,9 @@ private:
     // 0: clockwise, 1: counterclockwise
     bool preferredOutInterface;
 
+    // length of the network
+    int NET_LENGTH;
+
 public:
     Net();
     virtual ~Net();
@@ -27,7 +30,6 @@ protected:
 
     virtual void handleDataPacket(Packet *data_pkt);
     virtual void handleHelloPacket(Packet *hello_pkt);
-    virtual void handleInfoPacket(Packet *info_pkt);
 };
 
 Define_Module(Net);
@@ -48,6 +50,7 @@ void Net::initialize()
 
     // initialize with invalid interface value
     preferredOutInterface = -1;
+    NET_LENGTH = 0;
 
     Packet *hello_pkt = new Packet();
 
@@ -58,6 +61,7 @@ void Net::initialize()
     hello_pkt->setDestination(DEST_NODE);
 
     hello_pkt->setHopCount(0);
+    hello_pkt->setHopsToDestination(0);
 
     send(hello_pkt, "toLnk$o", REC_LNK);
 }
@@ -89,45 +93,32 @@ void Net::handleDataPacket(Packet *data_pkt)
 
 void Net::handleHelloPacket(Packet *hello_pkt)
 {
-    if (hello_pkt->getDestination() == this->getParentModule()->getIndex())
+    // hello packet has returned to its source node
+    if (hello_pkt->getSource() == this->getParentModule()->getIndex())
     {
-        Packet *info_pkt = new Packet();
+        // the packet has completed a round and we now know the network length
+        NET_LENGTH = hello_pkt->getHopCount();
 
-        info_pkt->setKind(KIND_INFO);
-        info_pkt->setByteLength(20);
-
-        info_pkt->setDestination(hello_pkt->getSource());
-
-        info_pkt->setHopCount(hello_pkt->getHopCount());
-
-        // no hace falta que mandemos dos paquetes porque la red es simétrica
-        send(info_pkt, "toLnk$o", REC_LNK);
-        delete (hello_pkt);
-    }
-    else // If not, forward the packet
-    {
-        hello_pkt->setHopCount(hello_pkt->getHopCount() + 1);
-        send(hello_pkt, "toLnk$o", REC_LNK);
-    }
-}
-
-void Net::handleInfoPacket(Packet *info_pkt)
-{
-    if (info_pkt->getDestination() == this->getParentModule()->getIndex())
-    {
-        // the ring is symmetrical, so if the original interface is not the
-        // optimal, then the other one is
-        if (info_pkt->getHopCount() < NET_HALF_LENGTH)
+        // if distance to destination is less than half the network length,
+        // then the optimal interface is the same as the one used to send hello packets
+        if (hello_pkt->getHopsToDestination() < NET_LENGTH / 2)
             preferredOutInterface = (int)REC_LNK;
-        else
+        else // otherwise choose the other interface, because the topology is symmetrical
             preferredOutInterface = (int)!REC_LNK;
 
-        delete (info_pkt);
+        delete (hello_pkt);
     }
-    else // If not, forward the packet
+    else // hello packet hasn't yet returned to its source node
     {
-        // we do not increment the hop count of info packets
-        send(info_pkt, "toLnk$o", REC_LNK);
+        if (hello_pkt->getDestination() == this->getParentModule()->getIndex())
+            // set distance covered so far as distance to destination
+            hello_pkt->setHopsToDestination(hello_pkt->getHopCount());
+
+        // increment hop count
+        hello_pkt->setHopCount(hello_pkt->getHopCount() + 1);
+
+        // forward the packet
+        send(hello_pkt, "toLnk$o", REC_LNK);
     }
 }
 
@@ -144,9 +135,5 @@ void Net::handleMessage(cMessage *msg)
     else if (pkt->getKind() == KIND_HELLO)
     {
         handleHelloPacket(pkt);
-    }
-    else if (pkt->getKind() == KIND_INFO)
-    {
-        handleInfoPacket(pkt);
     }
 }

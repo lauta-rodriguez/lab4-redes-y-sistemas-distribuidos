@@ -74,9 +74,6 @@ void Net::handleDataPacket(Packet *data_pkt)
     // If this node is the final destination, send to App
     if (data_pkt->getDestination() == this->getParentModule()->getIndex())
     {
-        // hop count is initialized to 0
-        // data_pkt->setHopCount(data_pkt->getHopCount() + 1);
-
         send(data_pkt, "toApp$o");
 
         // record as vector de la cantidad de hops de ese paquete

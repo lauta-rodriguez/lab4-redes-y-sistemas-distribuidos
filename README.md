@@ -60,7 +60,9 @@ El algoritmo de enrutamiento modificado sigue los siguientes pasos:
 
 # Análisis de las redes bajo los algoritmos de enrutamiento
 
-Se utiliza una distribución exponencial con un parámetro variable, que toma los siguientes valores: `0.3`, `0.6` y `1`, lo que significa que los paquetes se generan en promedio cada `0.3`, `0.6` y `1` segundo. Se plantean dos casos de estudio:
+Se utiliza una distribución exponencial con un parámetro variable y analizamos el comportamiento de la red para los siguientes valores: `0.3`, `0.6` y `1`, lo que significa que los eventos se producen en promedio cada `0.3`, `0.6` y `1` segundo. Esto afecta inversamente a la frecuencia con la que los paquetes son enviados desde la capa de aplicación, es decir, a una distribución exponencial más chica, obtenemos una inyección de paquetes en la red más alta.
+
+Se plantean dos casos de estudio:
 
 ## Caso 1: Dos nodos envían paquetes al mismo nodo destino
 

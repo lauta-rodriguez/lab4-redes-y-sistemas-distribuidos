@@ -57,12 +57,16 @@ void Net::initialize()
     hello_pkt->setKind(KIND_HELLO);
     hello_pkt->setByteLength(20);
 
+    // set source as this node
     hello_pkt->setSource(this->getParentModule()->getIndex());
-    hello_pkt->setDestination(DEST_NODE);
+
+    // set destination as the destination node defined in the ini file
+    hello_pkt->setDestination(par("destination").intValue());
 
     hello_pkt->setHopCount(0);
     hello_pkt->setHopsToDestination(0);
 
+    // send the hello packet clockwise
     send(hello_pkt, "toLnk$o", REC_LNK);
 }
 
@@ -91,6 +95,20 @@ void Net::handleDataPacket(Packet *data_pkt)
     }
 }
 
+/*
+ * This method handles hello packets, which are used to determine:
+ *
+ * Network length: logged when the hello packet returns to its source node.
+ *
+ * Distance to destination (clockwise): logged as the number of hops the packet
+ * has made when it reaches the destination node. It is not the shortest distance.
+ *
+ * Optimal interface: As the ring topology is symmetrical, the shortest distance
+ * has to be <= NET_LENGTH / 2.
+ * If distance to destination is as such, then the optimal interface has to be
+ * the same as the one used to send hello packets. If not, then it has to be the
+ * other one.
+ */
 void Net::handleHelloPacket(Packet *hello_pkt)
 {
     // hello packet has returned to its source node

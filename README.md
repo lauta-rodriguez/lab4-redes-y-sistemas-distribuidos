@@ -78,14 +78,14 @@ El algoritmo modificado reduce significativamente el **delay** de los paquetes e
     style="display: inline-block;
            margin-left: auto;
            margin-right: auto;
-           width: 45%;"
+           width: 30%;"
     src="./plots/img/time-delay-p1c1-2.png">
 </img>
 <img
     style="display: inline-block;
            margin-left: auto;
            margin-right: auto;
-           width: 45%;"
+           width: 30%;"
     src="./plots/img/time-delay-p2c1-2.png">
 </img>
 
@@ -94,8 +94,11 @@ El algoritmo modificado reduce significativamente el **delay** de los paquetes e
 Se observa que el algoritmo modificado distribuye de manera más equitativa la carga de tráfico entre las interfaces, evitando congestionar el buffer del nodo `0`.
 
 ![buffer_p1_s1](/plots/img/time-buffer-p1c1-0.png)
+![buffer_p1_s1](/plots/img/time-buffer-p2c1-0.png)
 ![buffer_p1_s2](/plots/img/time-buffer-p1c1-1.png)
+![buffer_p1_s2](/plots/img/time-buffer-p2c1-1.png)
 ![buffer_p1_s3](/plots/img/time-buffer-p1c1-2.png)
+![buffer_p1_s3](/plots/img/time-buffer-p2c1-2.png)
 
 ## Caso 2: Todos los nodos envían paquetes al mismo nodo destino
 
@@ -111,8 +114,11 @@ Se observa que el algoritmo modificado reduce de manera significativa el delay e
 ### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
 
 ![buffer_p1_s1](/plots/img/time-buffer-p1c2-0.png)
+![buffer_p1_s1](/plots/img/time-buffer-p2c2-0.png)
 ![buffer_p1_s2](/plots/img/time-buffer-p1c2-1.png)
+![buffer_p1_s2](/plots/img/time-buffer-p2c2-1.png)
 ![buffer_p1_s3](/plots/img/time-buffer-p1c2-2.png)
+![buffer_p1_s3](/plots/img/time-buffer-p2c2-2.png)
 
 # Conclusiones
 

@@ -76,24 +76,26 @@ El algoritmo modificado reduce significativamente el **delay** de los paquetes e
 
 - Distribución equitativa de la carga de tráfico: El nuevo algoritmo distribuye de manera más equitativa la carga de tráfico entre las interfaces de comunicación de los nodos. Esto evita la congestión y el cuello de botella que se producían en los nodos ubicados a la derecha del nodo emisor en el algoritmo inicial.
 
-<img
-    style="display: inline-block;
-           margin-left: auto;
-           margin-right: auto;
-           width: 30%;"
-    src="./plots/img/time-delay-p1c1-2.png">
-</img>
-<img
-    style="display: inline-block;
-           margin-left: auto;
-           margin-right: auto;
-           width: 30%;"
-    src="./plots/img/time-delay-p2c1-2.png">
-</img>
+![delay_p1](/plots/img/time-delay-p1c1-2.png)
+![delay_p2](/plots/img/time-delay-p2c1-2.png)
+
+Incluso habiendo mejorado las métricas de retardo, notamos que a medida que avanza el tiempo de la simulación y aumenta la ocupación de los búferes, también se observa un incremento en el retardo. Esto se debe a que los paquetes no pueden ser reenviados tan rápidamente, ya que deben esperar a que los paquetes que estaban en los búferes al momento de su llegada sean liberados. Sin embargo, este efecto no se aprecia en el escenario con `interArrivalTime = 1`, donde la ocupación de los búferes se mantiene considerablemente más baja y constante.
+
+### Average Delay
+
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 82                | 71.08                |
+| 0,6              | 69.19             | 41.07                |
+| 1,0              | 51.15             | 6.90                 |
 
 ### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
 
-Se observa que el algoritmo modificado distribuye de manera más equitativa la carga de tráfico entre las interfaces, evitando congestionar el buffer del nodo `0`.
+Para ambos algoritmos, se observa que la ocupación de los búferes disminuye a medida que aumenta el valor de `interArrivalTime`. Esto se debe a que los eventos ocurren más espaciados en el tiempo, lo que resulta en una menor inyección de paquetes en la red.
+
+En general, en el algoritmo inicial, se observa que el nodo `0` presenta una ocupación de búfer significativamente mayor que los demás nodos. Esto se debe a que todos los paquetes viajan en sentido horario y el nodo `0` actúa como nodo intermedio para los paquetes enviados por el nodo `2`, además de gestionar sus propios paquetes.
+
+Por otro lado, se puede notar que en todas las variaciones de `interArrivalTime`, el algoritmo modificado distribuye de manera más equitativa la carga de tráfico entre los nodos, evitando especialmente la sobrecarga del búfer del nodo `0`. Esto se evidencia en el hecho de que las curvas en los gráficos del algoritmo modificado son bastante similares y alcanzan valores más bajos en comparación con el algoritmo inicial.
 
 ![buffer_p1_s1](/plots/img/time-buffer-p1c1-0.png)
 ![buffer_p1_s1](/plots/img/time-buffer-p2c1-0.png)
@@ -101,6 +103,22 @@ Se observa que el algoritmo modificado distribuye de manera más equitativa la c
 ![buffer_p1_s2](/plots/img/time-buffer-p2c1-1.png)
 ![buffer_p1_s3](/plots/img/time-buffer-p1c1-2.png)
 ![buffer_p1_s3](/plots/img/time-buffer-p2c1-2.png)
+
+Obtenemos los mejores resultados con `interArrivalTime=1`, ya que con menos paquetes en la red se logra que estos utilicen los búferes intermedios de manera más eficiente y no permanezcan allí durante mucho tiempo. Particularmente, se observa lo siguiente:
+
+- **Algoritmo inicial**: El nodo 2 presenta una ocupación de búfer muy baja, ya que los paquetes se envían desde ese nodo pero no se reciben paquetes de ningún otro lugar. Por otro lado, el nodo 0 muestra una ocupación muy alta debido a la carga de sus propios paquetes y los del nodo 2.
+- **Algoritmo modificado**: Tanto el nodo 0 como el nodo 2 mantienen su ocupación cerca de cero.
+
+### Average Hop Count
+
+En cuanto a la cantidad de saltos que realiza un paquete para llegar a destino, logramos una reducción considerable, ya que en el agoritmo modificado se elige el camino más corto. Esto evita la necesidad de realizar un recorrido casi completo del anillo en casos donde los nodos de destino están cercanos entre sí.  
+De esta manera, se logra minimizar la cantidad de saltos necesarios para entregar los paquetes.
+
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 3.44              | 3                    |
+| 0,6              | 3.73              | 3                    |
+| 1,0              | 3.91              | 3                    |
 
 ## Caso 2: Todos los nodos envían paquetes al mismo nodo destino
 

@@ -126,12 +126,24 @@ Los nodos **0**, **1**, **2**, **3**, **4**, **5**, **6** y **7** envían paquet
 
 ### Comparación del delay de los paquetes en ambos algoritmos
 
-Se observa que el algoritmo modificado reduce de manera significativa el delay en comparación con el algoritmo inicial. Esto se debe a la forma en que se distribuye la carga de tráfico en el sistema. En el algoritmo modificado, la carga se divide en dos: la mitad de los nodos envían paquetes a través de la interfaz `0` y la otra mitad utiliza la interfaz `1`.
+No observamos cambios significativos en cuanto al delay para este caso de estudio. Dado que en ambos casos de estudio vemos una fuerte relación entre el delay y la ocupación de los búferes, creemos que esto tiene que ver con la gran cantidad de paquetes que se encuentran en la red.
+
+Sin embargo, parece haber una ligera mejora en el caso de `interArrivalTime = 1` (curva azul en ambos gráficos). Parece ser que los picos de esta curva no llegan tan alto como lo hacen en el caso del algoritmo inicial, esto lo podemos observar mejor si comparamos la curva azul con la curva verde en ambos gráficos, la cual se mantiene bastante parecida.
 
 ![delay_p1](/plots/img/time-delay-p1c2-2.png)
 ![delay_p2](/plots/img/time-delay-p2c2-2.png)
 
+### Average Delay
+
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 79.31             | 80.25                |
+| 0,6              | 70.83             | 71.51                |
+| 1,0              | 64.53             | 63.66                |
+
 ### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
+
+No observamos cambios significativos en cuanto a la ocupación de búferes para este caso de estudio, creemos que se debe a la misma razón que para el caso del delay. Lo que sí podemos observar en las gráficas es que la carga de los búferes se reparte de manera más equitativa, lo que se evidencia en que las curvas para el algoritmo modificado suelen mantenerse más cercanas entre sí.
 
 ![buffer_p1_s1](/plots/img/time-buffer-p1c2-0.png)
 ![buffer_p1_s1](/plots/img/time-buffer-p2c2-0.png)
@@ -140,23 +152,7 @@ Se observa que el algoritmo modificado reduce de manera significativa el delay e
 ![buffer_p1_s3](/plots/img/time-buffer-p1c2-2.png)
 ![buffer_p1_s3](/plots/img/time-buffer-p2c2-2.png)
 
-# Conclusiones
-
-En el caso de estudio 1, donde solo dos nodos envían paquetes al mismo destino, el algoritmo modificado logra reducir tanto el retardo como la cantidad promedio de saltos necesarios para entregar los paquetes. Esto se debe a la distribución equitativa de la carga de tráfico entre las interfaces de comunicación de los nodos.
-
-En el caso de estudio 2, donde todos los nodos envían paquetes al mismo destino, el algoritmo modificado también logra disminuir el retardo promedio de los paquetes en comparación con el algoritmo inicial. Aunque la cantidad promedio de saltos no disminuye significativamente.
-
-Sin embargo, es importante destacar que el algoritmo modificado aún puede ser mejorado. En lugar de hardcodear la ruta de los paquetes en la etapa de inundación, se podría implementar un análisis periódico del estado de la red para enrutar los paquetes en función de los cambios en la topología. Esto permitiría adaptar el enrutamiento de manera dinámica y optimizar aún más el rendimiento de la red.
-
-### Caso de estudio 1: Average Hop Count
-
-| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
-| ---------------- | ----------------- | -------------------- |
-| 0,3              | 3.44              | 3                    |
-| 0,6              | 3.73              | 3                    |
-| 1,0              | 3.91              | 3                    |
-
-### Caso de estudio 2: Average Hop Count
+### Average Hop Count
 
 | interArrivalTime | Algoritmo inicial | Algoritmo modificado |
 | ---------------- | ----------------- | -------------------- |

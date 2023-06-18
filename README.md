@@ -126,7 +126,7 @@ Los nodos **0**, **1**, **2**, **3**, **4**, **5**, **6** y **7** envían paquet
 
 ### Comparación de ocupación de búferes de las interfaces en ambos algoritmos
 
-No observamos cambios significativos en cuanto a la ocupación de búferes para este caso de estudio, creemos que se debe a la misma razón que para el caso del delay. Lo que sí podemos observar en las gráficas es que la carga de los búferes se reparte de manera más equitativa, lo que se evidencia en que las curvas para el algoritmo modificado suelen mantenerse más cercanas entre sí.
+No observamos cambios significativos en cuanto a la ocupación de búferes para este caso de estudio, creemos que esto se debe a que al haber tantos paquetes en circulación, los búferes se llenan demasiado rápido y repartir la carga entre los demás nodos no llega a producir una diferencia significativa. Lo que sí podemos observar en las gráficas es que la carga de los búferes se reparte de manera más equitativa, lo que se evidencia en que las curvas para el algoritmo modificado suelen mantenerse más cercanas entre sí.
 
 ![buffer_p1_s1](/plots/img/time-buffer-p1c2-0.png)
 ![buffer_p1_s1](/plots/img/time-buffer-p2c2-0.png)

@@ -53,8 +53,8 @@ El algoritmo de enrutamiento modificado sigue los siguientes pasos:
 
 3. Al regresar el paquete `Hello` al nodo emisor, este utiliza la información contenida en el paquete para determinar la interfaz óptima para enviar paquetes al destino, y luego lo descarta. Se selecciona la interfaz que requiera la menor cantidad de saltos para alcanzar el nodo destino. Para tomar la decisión, se considera lo siguiente dado que la topología de anillo simétrica:
 
-   - Si se necesitó saltar menos de la mitad (o igual a la mitad) de los nodos de la red para llegar al destino desde la interfaz `REC_LNK`, se elige esa interfaz como óptima (`REC_LNK`).
-   - Si se necesitó saltar más de la mitad de los nodos, se selecciona la otra interfaz como óptima (`!REC_LNK`)
+   - Si se necesitó saltar menos de la mitad de los nodos de la red para llegar al destino desde la interfaz `REC_LNK`, se elige esa interfaz como óptima (`REC_LNK`).
+   - Si se necesitó saltar más de la mitad de los nodos (o igual a la mitad), se selecciona la otra interfaz como óptima (`!REC_LNK`)
 
    Esta información se almacena en un booleano, ya que hay dos posibles interfaces.
 
@@ -160,18 +160,10 @@ No observamos cambios significativos en cuanto a la ocupación de búferes para 
 | 0,6              | 1.65              | 1.57                 |
 | 1,0              | 2.06              | 1.84                 |
 
-### Caso de estudio 1: Average Delay
+# Conclusiones
 
-| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
-| ---------------- | ----------------- | -------------------- |
-| 0,3              | 82                | 71.08                |
-| 0,6              | 69.19             | 41.07                |
-| 1,0              | 51.15             | 6.90                 |
+En el primer caso de estudio, donde solo dos nodos envían paquetes al mismo destino, se observa que el algoritmo modificado logra reducir tanto el retardo como la cantidad promedio de saltos necesarios para entregar los paquetes. Esto se debe a la distribución equitativa de la carga de tráfico entre las interfaces de comunicación de los nodos.
 
-### Caso de estudio 2: Average Delay
+En el segundo caso de estudio, donde todos los nodos envían paquetes al mismo destino, el algoritmo modificado también consigue una ligera disminución en el retardo promedio de los paquetes y la cantidad promedio de saltos en comparación con el algoritmo inicial, aunque no de manera significativa. Esto podría atribuirse al hecho de que muchos paquetes se envían al mismo nodo, por lo que varios nodos deben actuar como intermediarios y a la vez que deben gestionar el envío de sus propios paquetes.
 
-| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
-| ---------------- | ----------------- | -------------------- |
-| 0,3              | 79.31             | 80.25                |
-| 0,6              | 70.83             | 71.51                |
-| 1,0              | 64.53             | 63.66                |
+Es importante destacar que el algoritmo modificado puede ser mejorado. En lugar de hardcodear la ruta de los paquetes en la etapa de inundación, se podría implementar un análisis periódico del estado de la red para enrutar los paquetes en función de los cambios en la topología y ocupación de búferes. Esto permitiría adaptar el enrutamiento de manera dinámica y optimizar aún más el rendimiento de la red.

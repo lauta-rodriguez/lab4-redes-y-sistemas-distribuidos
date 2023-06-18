@@ -47,11 +47,16 @@ Además, este algoritmo busca mitigar el problema del cuello de botella que se g
 
 El algoritmo de enrutamiento modificado sigue los siguientes pasos:
 
-1. Al iniciar la simulación, cada nodo envía un paquete de **reconocimiento** llamado `Hello` al nodo destino establecido en el archivo de configuración `omnetpp.ini`. El paquete se envía por la interfaz `0`.
+1. Al iniciar la simulación, cada nodo envía un paquete de reconocimiento denominado `Hello` a través de la interfaz `REC_LNK`, definida como `0`. El paquete circula en sentido horario y se incrementa un contador de saltos dentro del mismo en cada salto. El objetivo es que el paquete complete una vuelta al anillo y regrese al nodo de origen.
 
-2. Una vez que el paquete de reconocimiento `Hello` llega al nodo destino, este envía un paquete de **información** llamado `Info` en el mismo sentido que el paquete de reconocimiento. El paquete `Info` se envía por la interfaz `0` al nodo emisor, indicando la cantidad de saltos que ha realizado el paquete de **reconocimiento**.
+2. Cuando el paquete `Hello` llega al nodo destino establecido en el archivo de configuración `omnetpp.ini`, se registra el número de saltos realizados hasta ese momento en un campo especial dentro del paquete. Luego, el paquete continúa su trayectoria en la misma dirección que venía.
 
-3. El nodo emisor recibe el paquete de **información** `Info` y determina la interfaz por la cual debe enviar los paquetes. Se elige la interfaz que requiera la menor cantidad de saltos para llegar al nodo destino. Para tomar esta decisión, se compara la cantidad de saltos informada en el paquete `Info` con la mitad de la cantidad de nodos en la red (`NET_HALF_LENGTH`). Si la cantidad de saltos informada es menor a la mitad de la cantidad de nodos, se prefiere la interfaz `0`; de lo contrario, se prefiere la interfaz `1`.
+3. Al regresar el paquete `Hello` al nodo emisor, este utiliza la información contenida en el paquete para determinar la interfaz óptima para enviar paquetes al destino, y luego lo descarta. Se selecciona la interfaz que requiera la menor cantidad de saltos para alcanzar el nodo destino. Para tomar la decisión, se considera lo siguiente dado que la topología de anillo simétrica:
+
+   - Si se necesitó saltar menos de la mitad (o igual a la mitad) de los nodos de la red para llegar al destino desde la interfaz `REC_LNK`, se elige esa interfaz como óptima (`REC_LNK`).
+   - Si se necesitó saltar más de la mitad de los nodos, se selecciona la otra interfaz como óptima (`!REC_LNK`)
+
+   Esta información se almacena en un booleano, ya que hay dos posibles interfaces.
 
 # Análisis de las redes bajo los algoritmos de enrutamiento
 
@@ -69,8 +74,20 @@ El algoritmo modificado reduce significativamente el **delay** de los paquetes e
 
 - Distribución equitativa de la carga de tráfico: El nuevo algoritmo distribuye de manera más equitativa la carga de tráfico entre las interfaces de comunicación de los nodos. Esto evita la congestión y el cuello de botella que se producían en los nodos ubicados a la derecha del nodo emisor en el algoritmo inicial.
 
-![delay_p1](/plots/img/time-delay-p1c1-2.png)
-![delay_p2](/plots/img/time-delay-p2c1-2.png)
+<img
+    style="display: inline-block;
+           margin-left: auto;
+           margin-right: auto;
+           width: 45%;"
+    src="./plots/img/time-delay-p1c1-2.png">
+</img>
+<img
+    style="display: inline-block;
+           margin-left: auto;
+           margin-right: auto;
+           width: 45%;"
+    src="./plots/img/time-delay-p2c1-2.png">
+</img>
 
 ### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
 

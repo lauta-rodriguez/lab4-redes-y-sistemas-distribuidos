@@ -68,28 +68,7 @@ Se plantean dos casos de estudio:
 
 Los nodos **0** y **2** envían paquetes al nodo **5**.
 
-### Comparación del delay de los paquetes en ambos algoritmos
-
-El algoritmo modificado reduce significativamente el **delay** de los paquetes en comparación con el algoritmo inicial. Esto se debe a dos factores:
-
-- Reducción de la distancia recorrida por los paquetes: El algoritmo modificado disminuye la cantidad de saltos que los paquetes deben realizar para llegar a su destino.
-
-- Distribución equitativa de la carga de tráfico: El nuevo algoritmo distribuye de manera más equitativa la carga de tráfico entre las interfaces de comunicación de los nodos. Esto evita la congestión y el cuello de botella que se producían en los nodos ubicados a la derecha del nodo emisor en el algoritmo inicial.
-
-![delay_p1](/plots/img/time-delay-p1c1-2.png)
-![delay_p2](/plots/img/time-delay-p2c1-2.png)
-
-Incluso habiendo mejorado las métricas de retardo, notamos que a medida que avanza el tiempo de la simulación y aumenta la ocupación de los búferes, también se observa un incremento en el retardo. Esto se debe a que los paquetes no pueden ser reenviados tan rápidamente, ya que deben esperar a que los paquetes que estaban en los búferes al momento de su llegada sean liberados. Sin embargo, este efecto no se aprecia en el escenario con `interArrivalTime = 1`, donde la ocupación de los búferes se mantiene considerablemente más baja y constante.
-
-### Average Delay
-
-| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
-| ---------------- | ----------------- | -------------------- |
-| 0,3              | 82                | 71.08                |
-| 0,6              | 69.19             | 41.07                |
-| 1,0              | 51.15             | 6.90                 |
-
-### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
+### Comparación de ocupación de búferes de las interfaces en ambos algoritmos
 
 Para ambos algoritmos, se observa que la ocupación de los búferes disminuye a medida que aumenta el valor de `interArrivalTime`. Esto se debe a que los eventos ocurren más espaciados en el tiempo, lo que resulta en una menor inyección de paquetes en la red.
 
@@ -120,28 +99,32 @@ De esta manera, se logra minimizar la cantidad de saltos necesarios para entrega
 | 0,6              | 3.73              | 3                    |
 | 1,0              | 3.91              | 3                    |
 
-## Caso 2: Todos los nodos envían paquetes al mismo nodo destino
-
-Los nodos **0**, **1**, **2**, **3**, **4**, **5**, **6** y **7** envían paquetes al nodo **5**.
-
 ### Comparación del delay de los paquetes en ambos algoritmos
 
-No observamos cambios significativos en cuanto al delay para este caso de estudio. Dado que en ambos casos de estudio vemos una fuerte relación entre el delay y la ocupación de los búferes, creemos que esto tiene que ver con la gran cantidad de paquetes que se encuentran en la red.
+El algoritmo modificado reduce significativamente el **delay** de los paquetes en comparación con el algoritmo inicial. Esto se debe a dos factores:
 
-Sin embargo, parece haber una ligera mejora en el caso de `interArrivalTime = 1` (curva azul en ambos gráficos). Parece ser que los picos de esta curva no llegan tan alto como lo hacen en el caso del algoritmo inicial, esto lo podemos observar mejor si comparamos la curva azul con la curva verde en ambos gráficos, la cual se mantiene bastante parecida.
+- Reducción de la distancia recorrida por los paquetes: El algoritmo modificado disminuye la cantidad de saltos que los paquetes deben realizar para llegar a su destino.
 
-![delay_p1](/plots/img/time-delay-p1c2-2.png)
-![delay_p2](/plots/img/time-delay-p2c2-2.png)
+- Distribución equitativa de la carga de tráfico: El nuevo algoritmo distribuye de manera más equitativa la carga de tráfico entre las interfaces de comunicación de los nodos. Esto evita la congestión y el cuello de botella que se producían en los nodos ubicados a la derecha del nodo emisor en el algoritmo inicial.
+
+![delay_p1](/plots/img/time-delay-p1c1-2.png)
+![delay_p2](/plots/img/time-delay-p2c1-2.png)
+
+Incluso habiendo mejorado las métricas de retardo, notamos que a medida que avanza el tiempo de la simulación y aumenta la ocupación de los búferes, también se observa un incremento en el retardo. Esto se debe a que los paquetes no pueden ser reenviados tan rápidamente, ya que deben esperar a que los paquetes que estaban en los búferes al momento de su llegada sean liberados. Sin embargo, este efecto no se aprecia en el escenario con `interArrivalTime = 1`, donde la ocupación de los búferes se mantiene considerablemente más baja y constante.
 
 ### Average Delay
 
 | interArrivalTime | Algoritmo inicial | Algoritmo modificado |
 | ---------------- | ----------------- | -------------------- |
-| 0,3              | 79.31             | 80.25                |
-| 0,6              | 70.83             | 71.51                |
-| 1,0              | 64.53             | 63.66                |
+| 0,3              | 82                | 71.08                |
+| 0,6              | 69.19             | 41.07                |
+| 1,0              | 51.15             | 6.90                 |
 
-### Comparación del tamaño del búfer de las interfaces en ambos algoritmos
+## Caso 2: Todos los nodos envían paquetes al mismo nodo destino
+
+Los nodos **0**, **1**, **2**, **3**, **4**, **5**, **6** y **7** envían paquetes al nodo **5**.
+
+### Comparación de ocupación de búferes de las interfaces en ambos algoritmos
 
 No observamos cambios significativos en cuanto a la ocupación de búferes para este caso de estudio, creemos que se debe a la misma razón que para el caso del delay. Lo que sí podemos observar en las gráficas es que la carga de los búferes se reparte de manera más equitativa, lo que se evidencia en que las curvas para el algoritmo modificado suelen mantenerse más cercanas entre sí.
 
@@ -159,6 +142,23 @@ No observamos cambios significativos en cuanto a la ocupación de búferes para 
 | 0,3              | 1.33              | 1.31                 |
 | 0,6              | 1.65              | 1.57                 |
 | 1,0              | 2.06              | 1.84                 |
+
+### Comparación del delay de los paquetes en ambos algoritmos
+
+No observamos cambios significativos en cuanto al delay para este caso de estudio. Dado que en ambos casos de estudio vemos una fuerte relación entre el delay y la ocupación de los búferes, creemos que esto tiene que ver con la gran cantidad de paquetes que se encuentran en la red.
+
+Sin embargo, parece haber una ligera mejora en el caso de `interArrivalTime = 1` (curva azul en ambos gráficos). Parece ser que los picos de esta curva no llegan tan alto como lo hacen en el caso del algoritmo inicial, esto lo podemos observar mejor si comparamos la curva azul con la curva verde en ambos gráficos, la cual se mantiene bastante parecida.
+
+![delay_p1](/plots/img/time-delay-p1c2-2.png)
+![delay_p2](/plots/img/time-delay-p2c2-2.png)
+
+### Average Delay
+
+| interArrivalTime | Algoritmo inicial | Algoritmo modificado |
+| ---------------- | ----------------- | -------------------- |
+| 0,3              | 79.31             | 80.25                |
+| 0,6              | 70.83             | 71.51                |
+| 1,0              | 64.53             | 63.66                |
 
 # Conclusiones
 
